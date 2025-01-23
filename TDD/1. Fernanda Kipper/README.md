@@ -199,5 +199,6 @@ void setup() {
 }
 ```
 
+### Dessa maneira, já preparamos nosso teste para rodar conforme as regras de negócio propostas. Caso queira ver a implementação completa, está no: ```TransactionServiceTest```
 
-
+Aula da Kipper finalizada! 😊
