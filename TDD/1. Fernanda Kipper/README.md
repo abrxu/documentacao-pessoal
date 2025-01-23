@@ -61,10 +61,11 @@ class UserRepositoryTest {
 
 ## Colocando a mão na massa e começando os testes:
 
+## Repository
+
 1. Precisamos primeiramente inserir dados no Banco de Dados por meio do teste **antes de fazer as validações do teste**. Podemos fazer isso utilizando o EntityManager:
 
 ```java
-import org.springframework.beans.factory.annotation.Autowired;
 @Autowired
 EntityManager entityManager
 ```
@@ -129,7 +130,6 @@ class UserRepositoryTest {
 5. Nesse caso em específico, já que precisamos testar a funcionalidade de buscar um _User_ por meio de um _Documento_ iremos injetar no repository o próprio repository
 
 ```java
-import static org.assertj.core.api.Assertions.assertThat;
 @Autowired
 UserRepository userRepository;
 
@@ -145,4 +145,59 @@ void findUserByDocumentCase1() {
 }
 ```
 
-prontinho! agora criaremos um teste para garantir que: quando um usuário não exista não será retornado nada no banco de dados.
+prontinho! agora criaremos um teste para garantir que: quando um usuário não exista garantir que não será retornado nada do banco de dados.
+
+```java
+@Autowired
+UserRepository userRepository;
+
+@Test
+@DisplayName("Should not get User from DB when user does not exist")
+void findUserByDocumentCase2() {
+String document = "99999999901";
+
+    Optional<User> result = this.userRepository.findUserByDocument(document);
+    
+    assertThat(result.isEmpty()).isTrue();
+}
+```
+
+## Service
+
+1. Pensar nos casos que podem ocorrer ao decorrer do método, analisando o código bem antes de definir os casos;
+2. Setar o ```@DisplayName("Should[...]")``` para descrever o comportamento esperado daquele teste;
+3. Mockar os dados para buildar o ambiente propício para o teste daquele caso:
+
+3.1. Injetando as mesmas dependências que existem no ```Service``` original com annotation ```@Mock```:
+```java
+@Mock
+private UserService userService;
+
+@Mock
+private TransactionRepository repository;
+
+@Mock
+private AuthorizationService authService;
+
+@Mock
+private NotificationService notificationService;
+```
+
+3.2. Precisaremos também de uma instância do ```Service``` originário deste teste usando também uma annotation que detalhe que a classe deve usar os ```Mocks``` e não as classes reais:
+
+```java
+@Autowired
+@InjectMocks
+private TransactionService transactionService;
+```
+
+3.3. Adiciona-se também um novo método com a annotation ```@BeforeEach``` (indicando que este método deve ser executando sempre antes do teste unitário). O método será void e é comumente nomeado de ```setup```;
+```java
+@BeforeEach
+void setup() {
+    MockitoAnnotations.initMocks(this); // this = essa classe de testes
+}
+```
+
+
+
