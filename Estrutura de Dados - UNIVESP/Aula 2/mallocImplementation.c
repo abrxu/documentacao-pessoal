@@ -15,4 +15,7 @@ int main() {
 	pessoa1->altura = 185;
 	
 	printf("Peso: %i, Altura: %i\n", pessoa1->peso, pessoa1->altura);
+	
+	if(pessoa->altura>alturaMaxima) printf("Altura acima da máxima.\n");
+	else printf("Altura abaixo da máxima.\n")
 }
