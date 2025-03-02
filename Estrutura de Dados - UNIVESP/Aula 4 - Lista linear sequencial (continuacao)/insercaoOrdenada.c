@@ -16,10 +16,10 @@ typedef struct{
 bool inserirElementoEmArrayOrd(ARRAY* a, REGISTRO reg) {
 	if(a->nroElem >= MAX) return false;
 	int pos = a->nroElem;
-	while (pos > 0 && a->A[pos-1].chave > reg.chave) {
+	while (pos > 0 && a->A[pos-1].chave > reg.chave) { // desloca os elementos maiores que o que quer ser inserido
 		a->A[pos] = a->A[pos-1];
 		pos--;
 	}
-	a->A[pos] = reg;
+	a->A[pos] = reg; // após ter ordenado todos, insere o elemento desejado
 	a->nroElem++;
 }
